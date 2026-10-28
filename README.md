@@ -6,11 +6,11 @@
   <img src="https://img.shields.io/badge/Tasks-Forecasting%20%7C%20Classification-00897B" alt="Forecasting and classification">
 </p>
 
-Research code accompanying **DC-MSA**, a dilated-convolution-based multi-head self-attention approach for time-series Transformers.
+Research code of **DC-MSA**, a dilated-convolution-based multi-head self-attention approach for time-series Transformers.
 
 **Manuscript status:** Submitted to [Machine Learning with Applications](https://www.sciencedirect.com/journal/machine-learning-with-applications).
 
-[Overview](#overview) ? [Installation](#installation) ? [Datasets](#datasets) ? [Getting started](#getting-started) ? [Reproducibility](#reproducibility) ? [Acknowledgments](#acknowledgments)
+[Overview](#overview) ? [Installation](#installation) ? [Datasets](#datasets) ? [Getting started](#getting-started) ? [Acknowledgments](#acknowledgments)
 
 ## Overview
 
@@ -23,18 +23,7 @@ The implementation includes:
 - Forecasting metrics, classification metrics, and profiling with THOP and fvcore.
 - Dataset loaders, experiment scripts, and prediction-analysis notebooks.
 
-The diagram summarizes the convolution-based encoder path; see the source for exact tensor operations.
 
-```mermaid
-flowchart LR
-    A["Time-series input"] --> B["Embedding"]
-    B --> C["Dilated-convolution Q / K / V projections"]
-    C --> D["Attention"]
-    D --> E["Dilated-convolution head aggregation"]
-    E --> F["Encoder representation"]
-    F --> G["Forecasting head"]
-    F --> H["Classification head"]
-```
 
 ## Installation
 
@@ -66,16 +55,6 @@ The singular filename `requirement.txt` is also supported and forwards to `requi
 
 For forecasting benchmark background and data preparation, refer to the [Informer paper](https://arxiv.org/abs/2012.07436), **Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting**, and its [official repository and data instructions](https://github.com/zhouhaoyi/Informer2020#data).
 
-| Dataset | Source | Expected location |
-| --- | --- | --- |
-| ETT: ETTh1, ETTh2, ETTm1, ETTm2 | [ETDataset](https://github.com/zhouhaoyi/ETDataset) | `dataset/ETT-small/` |
-| Electricity | [Informer data resources](https://github.com/zhouhaoyi/Informer2020#data); [TSLib benchmark preparation](https://github.com/thuml/Time-Series-Library#usage) | `dataset/electricity/electricity.csv` |
-| Weather | [Informer data resources](https://github.com/zhouhaoyi/Informer2020#data); [TSLib benchmark preparation](https://github.com/thuml/Time-Series-Library#usage) | `dataset/weather/weather.csv` |
-| Exchange rate | [TSLib benchmark preparation](https://github.com/thuml/Time-Series-Library#usage) | `dataset/exchange_rate/exchange_rate.csv` |
-
-These datasets are referenced by the supplied convolution experiment scripts. Informer provides the ETT, electricity, and weather resources; the exchange-rate benchmark is linked separately through TSLib. Select the preprocessed CSV files matching the experiment configuration, as similarly named datasets from different sources may have different columns and sampling intervals.
-
-Use `--data ETTh1`, `ETTh2`, `ETTm1`, or `ETTm2` for the dedicated ETT loaders. Use `--data custom` for electricity, weather, and exchange-rate CSVs. Match `--enc_in`, `--dec_in`, and `--c_out` to the data dimensions; set `--freq` to the sampling frequency.
 
 ### Classification
 
@@ -84,37 +63,18 @@ Classification datasets are provided by the **UEA Multivariate Time Series Class
 - [Official UEA/UCR dataset portal](https://www.timeseriesclassification.com/dataset.php)
 - [UEA multivariate archive in .ts format](https://www.timeseriesclassification.com/aeon-toolkit/Archives/Multivariate2018_ts.zip)
 
-The supplied classification scripts reference **FaceDetection, Handwriting, Heartbeat, JapaneseVowels, SpokenArabicDigits, and UWaveGestureLibrary**.
+The supplied classification scripts reference **FaceDetection, Heartbeat, JapaneseVowels, SpokenArabicDigits, and UWaveGestureLibrary**.
 
 Extract each dataset into its own directory and preserve the original training and test filenames:
 
-```text
-dataset/
-??? ETT-small/
-?   ??? ETTh1.csv
-?   ??? ETTh2.csv
-?   ??? ETTm1.csv
-?   ??? ETTm2.csv
-??? electricity/
-?   ??? electricity.csv
-??? exchange_rate/
-?   ??? exchange_rate.csv
-??? weather/
-?   ??? weather.csv
-??? FaceDetection/
-    ??? FaceDetection_TRAIN.ts
-    ??? FaceDetection_TEST.ts
-```
 
-For classification, `--model_id` must match the dataset name, such as `FaceDetection`. The loader checks for local `.ts` files first and otherwise attempts a download from the `thuml/Time-Series-Library` dataset repository on Hugging Face.
-
-Datasets are downloaded separately and are excluded from the source repository.
 
 ## Getting started
 
 These examples exercise the current source implementation. They are starting configurations, not a claim of reproducing the submitted paper's final tables.
 
-**Current convolution settings:** Use `--d_model 512 --n_heads 8` for these examples. The convolution kernel size, dilation, and output channels are currently fixed in [layers/SelfAttention_Family.py](layers/SelfAttention_Family.py). Older scripts using `d_model=128` are incompatible with those settings.
+**Current convolution settings:** Use `--d_model 512 --n_heads 8` for these examples. The convolution kernel size, dilation, and output channels are currently fixed in [layers/SelfAttention_Family.py](layers/SelfAttention_Family.py). 
+
 
 ### Forecasting example: ETTh1
 
@@ -190,16 +150,6 @@ Forecasting results include `pred.npy`, `true.npy`, and `metrics.npy`. Classific
 ??? requirements.txt          # Runtime dependencies
 ??? requirement.txt           # Alias for requirements.txt
 ```
-
-## Reproducibility
-
-- `run.py` seeds Python, NumPy, and PyTorch with **2023**. Repeated runs use that same seed; deterministic GPU behavior is not explicitly enforced.
-- Preserve the dataset version, preprocessing, train/validation/test protocol, model configuration, and hardware details when comparing results.
-- The current command dispatcher supports `long_term_forecast` and `classification`; other task names shown in argument help are not wired into the entry point.
-- Parameter counts, MACs, FLOPs, and measured latency describe different aspects of efficiency. Compare them under the same input dimensions, batch size, hardware, and profiling convention.
-- Dependency checks and synthetic forward passes have been performed. Full training and paper-result reproduction have not been rerun as part of this documentation update.
-
-See [release preparation notes](docs/RELEASE_PREPARATION.md) for the verification scope and implementation issues identified during documentation.
 
 ## Acknowledgments
 
