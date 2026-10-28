@@ -29,7 +29,7 @@ The implementation includes:
 
 Use Linux or WSL/Ubuntu for the supplied Bash scripts. Run commands from the directory containing `run.py`?the local research workspace calls this directory `Project/`.
 
-The dependency versions in [requirements.txt](requirements.txt) were taken from the local research environment. Entry-point imports and small model forward passes were checked with **Python 3.14.4** and **PyTorch 2.12.0+cu126**. These checks do not establish a clean-install environment or reproduce the paper's experiments.
+The dependency versions in [requirements.txt](requirements.txt) were taken from the local research environment. Entry-point imports and small model forward passes were checked with **Python 3.14.4** and **PyTorch 2.12.0+cu126**.
 
 ```bash
 python3.14 -m venv .venv
@@ -65,13 +65,13 @@ Classification datasets are provided by the **UEA Multivariate Time Series Class
 
 The supplied classification scripts reference **FaceDetection, Heartbeat, JapaneseVowels, SpokenArabicDigits, and UWaveGestureLibrary**.
 
-Extract each dataset into its own directory and preserve the original training and test filenames:
+
 
 
 
 ## Getting started
 
-These examples exercise the current source implementation. They are starting configurations, not a claim of reproducing the submitted paper's final tables.
+These examples exercise the current source implementation. They are starting configurations.
 
 **Current convolution settings:** Use `--d_model 512 --n_heads 8` for these examples. The convolution kernel size, dilation, and output channels are currently fixed in [layers/SelfAttention_Family.py](layers/SelfAttention_Family.py). 
 
@@ -118,20 +118,8 @@ CUDA_VISIBLE_DEVICES=0 python -u run.py \
   --des demo --itr 1
 ```
 
-The classification pipeline infers the number of input channels, sequence length, and number of classes from the data.
 
-**Evaluation protocol:** The current classification training loop uses the `TEST` split for validation and early stopping as well as final evaluation. Its reported scores therefore involve test-set model selection. Establish a validation split from the training data before using this pipeline for an independent held-out benchmark.
 
-### Experiment scripts and outputs
-
-Forecasting scripts are available in [Dilated_ConvExps/](Dilated_ConvExps/); classification scripts are in [ClassificationScripts/](ClassificationScripts/). Some files end in `.sh_`; these remain Bash scripts. Review their GPU selection and model dimensions before running a batch of experiments.
-
-| Task | Output locations, relative to the project root |
-| --- | --- |
-| Forecasting | `<model>/<dataset>/checkpoints/`, `results/`, and `test_results/` |
-| Classification | `<dataset>/<model>/checkpoints/` and `test_results/` |
-
-Forecasting results include `pred.npy`, `true.npy`, and `metrics.npy`. Classification results include class probabilities, predictions, labels, and a text summary. Training losses are saved under each checkpoint's `loss_recordings/` directory.
 
 ## Repository structure
 
@@ -160,4 +148,4 @@ We gratefully acknowledge the authors and contributors of the following projects
 - **[Informer](https://github.com/zhouhaoyi/Informer2020)** ? forecasting benchmark resources and data-preparation guidance.
 - **[UEA Time Series Classification Archive](https://www.timeseriesclassification.com/)** ? multivariate time-series classification datasets.
 
-Please also acknowledge the original publications and dataset creators when using their code or data.
+Please also acknowledge the original publications and dataset creators when using their code or data, and please share and cite our work if you find it useful. Thank you!  
