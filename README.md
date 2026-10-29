@@ -10,7 +10,7 @@ Research code of **DC-MSA**, a dilated-convolution-based multi-head self-attenti
 
 **Manuscript status:** Submitted to [Machine Learning with Applications](https://www.sciencedirect.com/journal/machine-learning-with-applications).
 
-[Overview](#overview) ? [Installation](#installation) ? [Datasets](#datasets) ? [Getting started](#getting-started) ? [Acknowledgments](#acknowledgments)
+[Overview](#overview) <!-- ?  [Installation](#installation) ? [Datasets](#datasets) ? [Getting started](#getting-started) ? --> [Acknowledgments](#acknowledgments)
 
 ## Overview
 
