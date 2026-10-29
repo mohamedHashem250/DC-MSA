@@ -312,22 +312,10 @@ class MultiFilterDilatedHeadConv(nn.Module):
 
     def forward(self, x: torch.Tensor):
         # x: (B, L, H, dh)  — output of multi-head attention weighted sum,
-        #                      BEFORE any head-merge projection
         B, L, H, dh = x.shape
-        #print('x:', x.shape)
-        # Step 1: flatten heads and coordinates, fold tokens into batch axis.
-        # Result shape: (B*L, 1, H*dh)
-        # The 1-D layout is [head0_coord0, ..., head0_coord{dh-1},
-        #                    head1_coord0, ..., head1_coord{dh-1}, ...]
         x = x.reshape(B * L, 1, H * dh)
-        # Step 2: dilated convolution mixes heads at each embedding coordinate.
-        # Output shape: (B*L, C, dh)
-        # Each output channel is a distinct learned combination of heads.
         y = self.conv(x)
         #print('y: ', y.shape)
-        # Step 3: unfold batch axis back into (B, L, C*dh).
-        # With C = n_heads, C*dh = d_model — same width as the original
-        # nn.Linear out_proj output, so the rest of the model is unchanged.
         y = y.reshape(B, L, self.C * dh)
         return y
 
@@ -419,8 +407,6 @@ class AttentionLayer_conv(nn.Module):
         out = self.head_merge(out)
         
         return out, attn
-
-
 
     
 #DC-Var.-3
