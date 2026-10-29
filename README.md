@@ -68,7 +68,7 @@ The supplied classification scripts reference **FaceDetection, Heartbeat, Japane
 
 
 
-
+<!--
 ## Getting started
 
 These examples exercise the current source implementation. They are starting configurations.
@@ -138,7 +138,7 @@ CUDA_VISIBLE_DEVICES=0 python -u run.py \
 ??? requirements.txt          # Runtime dependencies
 ??? requirement.txt           # Alias for requirements.txt
 ```
-
+-->
 ## Acknowledgments
 
 We gratefully acknowledge the authors and contributors of the following projects for their publicly available implementations, experiment infrastructure, and dataset resources:
