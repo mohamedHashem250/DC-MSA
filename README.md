@@ -23,7 +23,7 @@ The implementation includes:
 - Forecasting metrics, classification metrics, and profiling with THOP and fvcore.
 - Dataset loaders, experiment scripts, and prediction-analysis notebooks.
 
-
+<!--
 
 ## Installation
 
@@ -48,7 +48,7 @@ python run.py --help
 The singular filename `requirement.txt` is also supported and forwards to `requirements.txt`. The requirements cover the training and evaluation code; notebook-specific tools may need separate installation.
 
 **GPU:** The current evaluation routines use CUDA synchronization for inference-time measurements. Use a CUDA-capable GPU for the complete training/evaluation examples. CPU model forward passes work, but full CPU evaluation requires adapting the timing routines.
-
+-->
 ## Datasets
 
 ### Forecasting
